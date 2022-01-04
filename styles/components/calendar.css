@@ -61,20 +61,27 @@
 
 .calendar__month-day {
   font-size: 0.85em;
-  height: 1.5rem;
-  align-self: center;
-  justify-self: center;
 }
 
-.calendar__month-day--muted {
+.calendar__month-day.has-events {
+  position: relative;
+  border: 1px solid black;
+}
+
+.calendar__month-day.muted {
   color: var(--color-muted);
   user-select: none;
 }
 
-.calendar__month-day--active{
-  border-radius: 50%;
+.calendar__month-day.active>.calendar__month-day__number {
+  display: inline-block;
   height: 1.25rem;
   width: 1.25rem;
   color: var(--color-white);
+  border-radius: 50%;
   background-color: var(--color-active);
+}
+
+.calendar__month-day__events {
+  display: none;
 }
