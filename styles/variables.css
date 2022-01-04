@@ -7,9 +7,11 @@
   --color-black: #000;
   --color-white: #fff;
   --color-active: #252525;
+  --color-active-hover: #454545;
   --color-grey: #9e9e9e;
   --color-transparent: #0000;
   --shadow: 0 4px 4px 2px var(--color-shadow);
+  --shadow-sm: 0 1px 4px 1px var(--color-shadow);
   --border-radius: 4px;
   --animation-time: 0.3s;
 }
