@@ -30,7 +30,7 @@ const getCalendarDays = (date) => {
   };
 };
 
-const createCalendarDays = (date = new Date()) => {
+const createCalendarDays = (date) => {
   const {
     firstMonthDay,
     lastMonthDay,
@@ -74,21 +74,46 @@ const createCalendarDays = (date = new Date()) => {
   return calendarDays;
 }
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
 class Calendar {
-  currentMonth;
+  // instance variables
+  currentMonthDate;
+
+  // HMTL elements
+  htmlElement;
+  prevBtn;
+  nextBtn;
+  dateContainer;
+  daysContainer;
 
   constructor(selector) {
-    this.calendarDays = createCalendarDays();
-    const
-
+    this.htmlElement = document.querySelector(selector);
+    this.currentMonthDate = new Date();
+    this.initView();
+    this.prevBtn.addEventListener('click', this.prevMonth);
+    this.nextBtn.addEventListener('click', this.nextMonth);
+    this.render()
   }
 
   prevMonth = () => {
-
+    this.currentMonthDate = new Date(
+      this.currentMonthDate.getFullYear(),
+      this.currentMonthDate.getMonth() - 1,
+      1
+    );
+    this.render();
   }
 
   nextMonth = () => {
-
+    this.currentMonthDate = new Date(
+      this.currentMonthDate.getFullYear(),
+      this.currentMonthDate.getMonth() + 1,
+      1
+    );
+    this.render();
   }
 
   setDays = () => {
@@ -99,4 +124,40 @@ class Calendar {
 
   }
 
+  initView = () => {
+    this.htmlElement.classList.add('calendar');
+    this.htmlElement.innerHTML = `
+    <header class="calendar__header">
+      <div class="calendar__date">2022 vasaris</div>
+      <div class="calendar__nav">
+        <span class="calendar__nav-link js-prev">&lt;</span>
+        <span class="calendar__nav-link js-next">&gt;</span>
+      </div>
+    </header>
+    <header class="calendar__weekdays">
+      <span class="calendar__week-day" title="Monday">M</span>
+      <span class="calendar__week-day" title="Tuesday">T</span>
+      <span class="calendar__week-day" title="Wednesday">W</span>
+      <span class="calendar__week-day" title="Thoursday">T</span>
+      <span class="calendar__week-day" title="Friday">F</span>
+      <span class="calendar__week-day" title="Saturday">S</span>
+      <span class="calendar__week-day" title="Sunday">S</span>
+    </header>
+    <section class="calendar__days"></section>`;
+    this.prevBtn = this.htmlElement.querySelector('.js-prev');
+    this.nextBtn = this.htmlElement.querySelector('.js-next');
+    this.dateContainer = this.htmlElement.querySelector('.calendar__date');
+    this.daysContainer = this.htmlElement.querySelector('.calendar__days');
+  }
+
+  render = () => {
+    const year = this.currentMonthDate.getFullYear();
+    const monthName = monthNames[this.currentMonthDate.getMonth()];
+    this.dateContainer.innerHTML = `${year} ${monthName}`;
+
+    this.calendarDays = createCalendarDays(this.currentMonthDate);
+    const calendarDaysHTML = this.calendarDays.map(component => component.htmlElement);
+    this.daysContainer.innerHTML = '';
+    this.daysContainer.append(...calendarDaysHTML);
+  }
 }
