@@ -123,6 +123,16 @@
 
 
 @media screen and (min-width: 1280px){
+  /* DISABLE: Hide subsequent events of same type */
+  .calendar__month-day__event.meeting ~ .calendar__month-day__event.meeting{
+    display: inline-block;
+  }
+  .calendar__month-day__event.call ~ .calendar__month-day__event.call{
+    display: inline-block;
+  }
+  .calendar__month-day__event.out ~ .calendar__month-day__event.out{
+    display: inline-block;
+  }
   .calendar {
     width: 65%;
     row-gap: 0;
