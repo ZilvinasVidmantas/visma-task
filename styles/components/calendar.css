@@ -81,7 +81,7 @@
   border-radius: 50%;
   background-color: var(--color-active);
 }
-.calendar__month__day__events{
+.calendar__month-day__events{
   display: flex;
   justify-items: center;
 }
@@ -100,14 +100,25 @@
 .calendar__month-day__event__title{
   display: none;
 }
-.meeting {
+.calendar__month-day__event.meeting>.calendar__month-day__event__dot {
   background-color: var(--color-event-meeting);
 }
-.call {
-    background-color: var(--color-event-call);
+.calendar__month-day__event.call>.calendar__month-day__event__dot {
+  background-color: var(--color-event-call);
 }
-.out {
+.calendar__month-day__event.out>.calendar__month-day__event__dot {
   background-color: var(--color-event-out);
+}
+
+/* Hide subsequent events of same type */
+.calendar__month-day__event.meeting ~ .calendar__month-day__event.meeting{
+  display: none;
+}
+.calendar__month-day__event.call ~ .calendar__month-day__event.call{
+  display: none;
+}
+.calendar__month-day__event.out ~ .calendar__month-day__event.out{
+  display: none;
 }
 
 
@@ -139,7 +150,7 @@
   .calendar__month-day__number{
     margin-left: 85%;
   }
-  .calendar__month__day__events{
+  .calendar__month-day__events{
     flex-direction: column;
     justify-items: left;
     
