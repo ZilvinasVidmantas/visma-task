@@ -15,7 +15,6 @@ class CalendarDay {
   }
 
   addEvent = (event) => {
-    console.log('add');
     this.events.push(event);
     this.render();
   }

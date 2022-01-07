@@ -1,4 +1,10 @@
 const eventDataArr = SessionStorage.get('events');
 const events = eventDataArr.map(event => new Event(event));
 
-const calendar = new Calendar('#text-calendar', events);
+const addEvent = (event) => {
+  console.log('main.js addEvent')
+  console.log(event)
+}
+
+const calendar = new Calendar('#calendar', events);
+const sidebar = new Sidebar('#sidebar', addEvent);
