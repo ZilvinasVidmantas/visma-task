@@ -5,12 +5,19 @@ class CalendarDay {
 
   // HTML elements
   htmlElement;
+  eventContainer;
 
   constructor({ date, isCurrentMonth }) {
     this.events = [];
     this.date = new Date(new Date(date.getTime()));
     this.isCurrentMonth = isCurrentMonth;
     this.initView();
+  }
+
+  addEvent = (event) => {
+    console.log('add');
+    this.events.push(event);
+    this.render();
   }
 
   initView = () => {
@@ -21,7 +28,41 @@ class CalendarDay {
     }
     this.htmlElement.innerHTML = `
       <span class="calendar__month-day__number">${this.date.getDate()}</span>
+      <div class="calendar__month-day__events"></div>
     `;
+    this.eventContainer = this.htmlElement.querySelector('.calendar__month-day__events');
+  }
+
+  createEventView = (event) => {
+    const eventView = document.createElement('span');
+    eventView.className = 'calendar__month-day__event';
+    let classModifier;
+    switch (event.type) {
+      case Event.Type.OUT:
+        classModifier = 'out'
+        break;
+      case Event.Type.MEETING:
+        classModifier = 'meeting'
+        break;
+      case Event.Type.CALL:
+        classModifier = 'call'
+        break;
+      default:
+        break;
+    }
+    eventView.classList.add(classModifier);
+    eventView.innerHTML = `
+      <div class="calendar__month-day__event__dot"></div>
+      <div class="calendar__month-day__event__title ">${event.title}</div>`;
+    return eventView;
+  }
+
+  render = () => {
+    this.eventContainer.innerHTML = '';
+    if (this.events.length !== 0) {
+      const eventViewArr = this.events.map(this.createEventView)
+      this.eventContainer.append(...eventViewArr);
+    }
   }
 
 }

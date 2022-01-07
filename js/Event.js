@@ -1,8 +1,4 @@
-const EventTypes = {
-  OUT: 'OUT',
-  METTING: 'METTING',
-  CALL: 'CALL',
-}
+// ENUM
 
 const createIdGenerator = (idBase) => () => {
   idBase++;
@@ -11,6 +7,12 @@ const createIdGenerator = (idBase) => () => {
 const createUniqId = createIdGenerator(1);
 
 class Event {
+  static Type = {
+    OUT: 'OUT',
+    METTING: 'METTING',
+    CALL: 'CALL',
+  };
+
   id;
   title;
   description;
@@ -27,7 +29,7 @@ class Event {
     this.date = new Date(date);
     this.startTime = startTime;
     this.endTime = endTime;
-    this.type = EventTypes[type];
+    this.type = Event.Type[type];
   }
 
   stringify = () => {

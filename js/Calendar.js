@@ -74,6 +74,15 @@ const createCalendarDays = (date) => {
   return calendarDays;
 }
 
+const isSameDate = (date1, date2) => {
+  if (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  ) return true;
+  return false;
+}
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -81,6 +90,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 class Calendar {
   // instance variables
   currentMonthDate;
+  events
 
   // HMTL elements
   htmlElement;
@@ -89,7 +99,8 @@ class Calendar {
   dateContainer;
   daysContainer;
 
-  constructor(selector) {
+  constructor(selector, events) {
+    this.events = events;
     this.htmlElement = document.querySelector(selector);
     this.currentMonthDate = new Date();
     this.initView();
@@ -150,14 +161,37 @@ class Calendar {
     this.daysContainer = this.htmlElement.querySelector('.calendar__days');
   }
 
-  render = () => {
+  renderTitle = () => {
     const year = this.currentMonthDate.getFullYear();
     const monthName = monthNames[this.currentMonthDate.getMonth()];
     this.dateContainer.innerHTML = `${year} ${monthName}`;
+  }
 
+  renderCalendarDays = () => {
     this.calendarDays = createCalendarDays(this.currentMonthDate);
     const calendarDaysHTML = this.calendarDays.map(component => component.htmlElement);
     this.daysContainer.innerHTML = '';
     this.daysContainer.append(...calendarDaysHTML);
+  }
+
+  loadEvents = () => {
+    for (let i = 0; i < this.events.length; i++) {
+      const event = this.events[i];
+      for (let j = 0; j < this.calendarDays.length; j++) {
+        const calendarDay = this.calendarDays[j];
+        if (isSameDate(event.date, calendarDay.date)) {
+          calendarDay.addEvent(event);
+          break;
+        }
+      }
+    }
+  }
+
+
+  render = () => {
+    this.renderTitle();
+    this.renderCalendarDays();
+    this.loadEvents();
+
   }
 }

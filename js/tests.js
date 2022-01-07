@@ -13,4 +13,3 @@ const runTests = () => {
 
 // runTests();
 
-const calendar = new Calendar('#text-calendar');
