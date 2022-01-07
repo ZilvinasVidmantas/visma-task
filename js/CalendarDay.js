@@ -4,7 +4,7 @@ class CalendarDay {
   isCurrentMonth;
 
   // HTML elements
-  htmlElement
+  htmlElement;
 
   constructor({ date, isCurrentMonth }) {
     this.events = [];
