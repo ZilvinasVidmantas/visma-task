@@ -1,6 +1,11 @@
 class FormCreate {
+  // instance variables
+  errors
+
   // HMTL elements
   htmlElement;
+  fields
+  fieldContainers
 
   constructor(addEvent) {
     this.addEvent = addEvent;
@@ -9,14 +14,76 @@ class FormCreate {
     this.htmlElement.addEventListener('submit', this.handleSubmit);
   }
 
+  validate = () => {
+    const errors = {};
+    const { title, startTime, endTime, date, type } = this.values;
+    // individual validations
+    if (!title) {
+      errors.title = 'Privalomas laukas';
+    } else if (title.length > 50) {
+      errors.title = 'Negali būt ilgesnis nei 50 simbolių';
+    }
+
+    if (!startTime) {
+      errors.startTime = 'Privalomas laukas';
+    }
+
+    if (!endTime) {
+      errors.endTime = 'Privalomas laukas';
+    }
+
+    if (!date) {
+      errors.date = 'Privalomas laukas';
+    }
+
+    if (!type) {
+      errors.type = 'Privalomas laukas';
+    }
+
+    // combined validations
+    if (startTime && endTime) {
+      const [startHours, startMinutes] = startTime.split(':').map(Number);
+      const [endHours, endMinutes] = endTime.split(':').map(Number);
+      const startTotalMinutes = startHours * 60 + startMinutes;
+      const endTotalMinutes = endHours * 60 + endMinutes;
+      if (startTotalMinutes >= endTotalMinutes) {
+        errors.endTime = 'Pabaigos laikas negali būti ankstenis už pradžios laiką';
+      }
+    }
+
+    return errors;
+  }
+
+  get values() {
+    const values = {};
+    for (const name in this.fields) {
+      values[name] = this.fields[name].value;
+    }
+    return values;
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    const mockData = 'duomenys';
-    const errors = {};
+    const errors = this.validate();
     if (errors === null) {
-      this.addEvent(mockData);
+      this.addEvent(this.values);
     } else {
-      alert('yra klaidų');
+      this.displayErrors(errors);
+    }
+  }
+
+  createError = (parent, message) => {
+    const errorBlock = document.createElement('div');
+    errorBlock.className = 'error';
+    errorBlock.innerHTML = message;
+    parent.append(message);
+  }
+
+  displayErrors = (errors) => {
+    for (const name in errors) {
+      const errorMessage = errors[name];
+      const fieldContainer = this.fieldContainers[name];
+      this.createError(fieldContainer, errorMessage);
     }
   }
 
@@ -57,19 +124,16 @@ class FormCreate {
     <div class="text-center mt-3">
       <button class="btn" type="submit">Create Event</button>
     </div>`;
-    const { fields, errors, fieldContainers } = Array
+    const { fields, fieldContainers } = Array
       .from(this.htmlElement.querySelectorAll('[name]'))
       .reduce((result, field) => {
         result.fields[field.name] = field;
-        result.errors[field.name] = null;
         result.fieldContainers[field.name] = field.parentElement;
         return result;
       }, {
         fields: {},
-        errors: {},
         fieldContainers: {}
       });
-    this.errors = errors;
     this.fields = fields;
     this.fieldContainers = fieldContainers;
   }
