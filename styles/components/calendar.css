@@ -121,30 +121,17 @@
 }
 
 /* Hide subsequent events of same type */
-.calendar__month-day__event.meeting~.calendar__month-day__event.meeting {
-  display: none;
-}
-
-.calendar__month-day__event.call~.calendar__month-day__event.call {
-  display: none;
-}
-
+.calendar__month-day__event.meeting~.calendar__month-day__event.meeting,
+.calendar__month-day__event.call~.calendar__month-day__event.call,
 .calendar__month-day__event.out~.calendar__month-day__event.out {
   display: none;
 }
 
-
 @media screen and (min-width: 1280px) {
 
   /* DISABLE: Hide subsequent events of same type */
-  .calendar__month-day__event.meeting~.calendar__month-day__event.meeting {
-    display: flex;
-  }
-
-  .calendar__month-day__event.call~.calendar__month-day__event.call {
-    display: flex;
-  }
-
+  .calendar__month-day__event.meeting~.calendar__month-day__event.meeting,
+  .calendar__month-day__event.call~.calendar__month-day__event.call,
   .calendar__month-day__event.out~.calendar__month-day__event.out {
     display: flex;
   }
